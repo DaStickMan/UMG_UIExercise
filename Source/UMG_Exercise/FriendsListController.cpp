@@ -2,6 +2,7 @@
 
 
 #include "FriendsListController.h"
+
 #include "Components/VerticalBoxSlot.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -114,6 +115,19 @@ void UFriendsListController::RandomlyChangePlayerStatus()
     DataManager->UpdateStatus(nickName);
 }
 
+void UFriendsListController::DisplayToast(const FText& Message)
+{
+	if (ToastPopupWidgetClass) // Assuming this is the UToastPopupWidget class set in the editor
+	{
+		UToastPopupWidget* ToastPopup = CreateWidget<UToastPopupWidget>(GetWorld(), ToastPopupWidgetClass);
+		if (ToastPopup)
+		{
+			ToastPopup->AddToViewport();
+			ToastPopup->ShowToast(Message, 3.0f); // Show for 3 seconds
+		}
+	}
+}
+
 FString UFriendsListController::GetFriendNickNameByPosition(int32 Index)
 {
 	// Get the keys and values from the TMap
@@ -143,6 +157,7 @@ void UFriendsListController::UpdateStatus(const FFriendsListData& friendData)
 
 		if(friendData.IsConnected)
 		{
+			DisplayToast(FText::FromString(NickNameString));
 			if(OfflineVerticalBox->HasChild(*FriendRow))
 			{
 				OfflineVerticalBox->RemoveChild(*FriendRow);
@@ -157,6 +172,7 @@ void UFriendsListController::UpdateStatus(const FFriendsListData& friendData)
 		}
 		
 		FriendsWidgetMap.Remove(NickNameString);
+		
 		AddFriend(friendData);
 	}
 }

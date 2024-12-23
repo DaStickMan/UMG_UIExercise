@@ -12,6 +12,8 @@
 #include "FriendsListData.h"
 #include "FriendsDataManager.h"
 
+#include "ToastPopupWidget.h"
+
 #include "Blueprint/UserWidget.h"
 #include "FriendsListController.generated.h"
 
@@ -27,10 +29,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(RowType="FriendsListData"))
 	FDataTableRowHandle Friends;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Friends")
+	UPROPERTY(EditAnywhere, Category = "Friends")
 	TSubclassOf<UFriendRowWidget> FriendRowWidgetClass;  // Pointer to the FriendRowWidget blueprint
 
-
+	UPROPERTY(EditAnywhere, Category = "Friends")
+	TSubclassOf<UToastPopupWidget> ToastPopupWidgetClass;
+	
 	virtual void NativeOnInitialized() override;
 
 protected:
@@ -62,11 +66,14 @@ private:
 	UFUNCTION()
 	void OnOfflineFriendsButtonClicked();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void StartRandomStatusUpdates();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void RandomlyChangePlayerStatus();
+
+	UFUNCTION()
+	void DisplayToast(const FText& Message);
 
 	FTimerHandle RandomStatusTimerHandle;
 
