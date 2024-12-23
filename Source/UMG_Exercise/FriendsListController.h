@@ -3,9 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Components/Button.h"
+#include "Components/Image.h"
+#include "Components/VerticalBox.h"
+
 #include "FriendRowWidget.h"
 #include "FriendsListData.h"
 #include "FriendsDataManager.h"
+
 #include "Blueprint/UserWidget.h"
 #include "FriendsListController.generated.h"
 
@@ -42,13 +48,29 @@ protected:
 
 	UFriendsDataManager* DataManager;
 	
-	void AddFriend(const FFriendsListData* Friend);
-	void HandleDataChanged();
+	void AddFriend(const FFriendsListData& Friend);
+	void UpdateStatus(const FFriendsListData&  Text);
 
 private:
-	UFUNCTION()
-	void OnOnlineFriendsButtonClicked() const;
 	
 	UFUNCTION()
-	void OnOfflineFriendsButtonClicked() const;
+	void HandleDataChanged(FriendsDataManagerOperationType type, FFriendsListData nickName);
+
+	UFUNCTION()
+	void OnOnlineFriendsButtonClicked();
+	
+	UFUNCTION()
+	void OnOfflineFriendsButtonClicked();
+
+	UFUNCTION(BlueprintCallable)
+	void StartRandomStatusUpdates();
+
+	UFUNCTION(BlueprintCallable)
+	void RandomlyChangePlayerStatus();
+
+	FTimerHandle RandomStatusTimerHandle;
+
+	TMap<FString, UFriendRowWidget*> FriendsWidgetMap;
+
+	FString GetFriendNickNameByPosition(int32 Index);	
 };

@@ -7,7 +7,7 @@ USTRUCT(BlueprintType)
 struct UMG_EXERCISE_API FFriendsListData: public FTableRowBase 
 {
 	GENERATED_BODY()
-
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FText NickName;
 

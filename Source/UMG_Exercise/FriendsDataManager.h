@@ -7,8 +7,15 @@
 #include "FriendsListData.h"
 #include "FriendsDataManager.generated.h"
 
+UENUM(BlueprintType)
+enum class FriendsDataManagerOperationType : uint8
+{
+	Add UMETA(DisplayName = "Add"),
+	Remove UMETA(DisplayName = "Remove"),
+	Update UMETA(DisplayName = "Update")
+};
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDataChanged);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDataChanged, FriendsDataManagerOperationType, OperationType, FFriendsListData, FriendData);
 
 /**
  * 
@@ -23,9 +30,12 @@ public:
 	FOnDataChanged OnDataChanged;
 
 	TArray<FFriendsListData*> LoadDataTable(const UDataTable* InDataTable);
-	void UpdateData(const FFriendsListData& UpdatedRow) const;
-    
+
+	FFriendsListData* GetByNickName(const FText nickName);
+
+	void UpdateStatus(const FText nickName);
+	
 private:
-	const UDataTable* DataTable;
+	UDataTable* DataTable;
 	
 };
