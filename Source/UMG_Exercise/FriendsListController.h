@@ -15,6 +15,7 @@
 #include "ToastPopupWidget.h"
 
 #include "Blueprint/UserWidget.h"
+#include "Components/ScrollBox.h"
 #include "FriendsListController.generated.h"
 
 /**
@@ -34,15 +35,19 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Friends")
 	TSubclassOf<UToastPopupWidget> ToastPopupWidgetClass;
+
+	UPROPERTY(EditAnywhere, Category = "Friends")
+	TSubclassOf<UHoverFriendWidget> HoverFriendWidgetClass;
+	
 	
 	virtual void NativeOnInitialized() override;
 
 protected:
 	UPROPERTY( meta = (BindWidget))
-	UVerticalBox* OnlineVerticalBox;
+	UScrollBox* OnlineScrollBox;
 
 	UPROPERTY( meta = (BindWidget))
-	UVerticalBox* OfflineVerticalBox;
+	UScrollBox* OfflineScrollBox;
 
 	UPROPERTY( meta = (BindWidget))
 	UButton* OnlineFriendsButton;

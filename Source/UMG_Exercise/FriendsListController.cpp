@@ -3,6 +3,7 @@
 
 #include "FriendsListController.h"
 
+#include "Components/CanvasPanelSlot.h"
 #include "Components/VerticalBoxSlot.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -27,33 +28,31 @@ void UFriendsListController::NativeOnInitialized()
 		AddFriend(*Friend);
 	}
 
+	// Define o modo de entrada
+	FInputModeUIOnly InputMode;
+	InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 	StartRandomStatusUpdates();
 }
 
 void UFriendsListController::AddFriend(const FFriendsListData& Friend)
 {
-	if (OnlineVerticalBox && OfflineVerticalBox && FriendRowWidgetClass)
+	if (OnlineScrollBox && OfflineScrollBox && FriendRowWidgetClass)
 	{
 		// Create an instance of the FriendRowWidget blueprint
 		UFriendRowWidget* NewFriendRow = CreateWidget<UFriendRowWidget>(this, FriendRowWidgetClass);
 
 		// Set the data for the new friend row
 		NewFriendRow->SetFriendData(Friend.NickName.ToString(), FString::Printf(TEXT("%lld"), Friend.Level), Friend.IsConnected);
-
-		UVerticalBoxSlot* NewSlot;
 		
 		if(Friend.IsConnected)
 		{
-			NewSlot = OnlineVerticalBox->AddChildToVerticalBox(NewFriendRow);
+			OnlineScrollBox->AddChild(NewFriendRow);
 		}
 		else
 		{
-			NewSlot = OfflineVerticalBox->AddChildToVerticalBox(NewFriendRow);
-		}
-
-		if (NewSlot)
-		{
-			NewSlot->SetPadding(FMargin(0, 50.0f, 0, 50.0f)); // Set the padding as needed
+			OfflineScrollBox->AddChild(NewFriendRow);
 		}
 
 		FriendsWidgetMap.Add(Friend.NickName.ToString(), NewFriendRow);
@@ -73,23 +72,23 @@ void UFriendsListController::HandleDataChanged(FriendsDataManagerOperationType t
 
 void UFriendsListController::OnOnlineFriendsButtonClicked()
 {
-	if(OnlineVerticalBox)
+	if(OnlineScrollBox)
 	{
-		const ESlateVisibility visibility = OnlineVerticalBox->GetParent()->GetVisibility() == ESlateVisibility::Visible ?
+		const ESlateVisibility visibility = OnlineScrollBox->GetVisibility() == ESlateVisibility::Visible ?
 			ESlateVisibility::Collapsed : ESlateVisibility::Visible;
-
-		OnlineVerticalBox->GetParent()->SetVisibility(visibility);
+		
+		OnlineScrollBox->SetVisibility(visibility);
 	}	
 }
 
 void UFriendsListController::OnOfflineFriendsButtonClicked()
 {
-	if(OfflineVerticalBox)
+	if(OfflineScrollBox)
 	{
-		const ESlateVisibility visibility = OfflineVerticalBox->GetParent()->GetVisibility() == ESlateVisibility::Visible ?
+		const ESlateVisibility visibility = OfflineScrollBox->GetVisibility() == ESlateVisibility::Visible ?
 			ESlateVisibility::Collapsed : ESlateVisibility::Visible;
-
-		OfflineVerticalBox->GetParent()->SetVisibility(visibility);		
+		
+		OfflineScrollBox->SetVisibility(visibility);		
 	}
 }
 
@@ -158,16 +157,16 @@ void UFriendsListController::UpdateStatus(const FFriendsListData& friendData)
 		if(friendData.IsConnected)
 		{
 			DisplayToast(FText::FromString(NickNameString));
-			if(OfflineVerticalBox->HasChild(*FriendRow))
+			if(OfflineScrollBox->HasChild(*FriendRow))
 			{
-				OfflineVerticalBox->RemoveChild(*FriendRow);
+				OfflineScrollBox->RemoveChild(*FriendRow);
 			}
 		}
 		else
 		{
-			if(OnlineVerticalBox->HasChild(*FriendRow))
+			if(OnlineScrollBox->HasChild(*FriendRow))
 			{
-				OnlineVerticalBox->RemoveChild(*FriendRow);
+				OnlineScrollBox->RemoveChild(*FriendRow);
 			}
 		}
 		
