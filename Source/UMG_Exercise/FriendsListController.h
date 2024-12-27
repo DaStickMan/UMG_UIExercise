@@ -6,13 +6,13 @@
 
 #include "Components/Button.h"
 #include "Components/Image.h"
-#include "Components/VerticalBox.h"
 
 #include "FriendRowWidget.h"
 #include "FriendsListData.h"
 #include "FriendsDataManager.h"
 
 #include "ToastPopupWidget.h"
+#include "HoverFriendWidget.h"
 
 #include "Blueprint/UserWidget.h"
 #include "Components/ScrollBox.h"
@@ -36,10 +36,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Friends")
 	TSubclassOf<UToastPopupWidget> ToastPopupWidgetClass;
 
-	UPROPERTY(EditAnywhere, Category = "Friends")
-	TSubclassOf<UHoverFriendWidget> HoverFriendWidgetClass;
-	
-	
 	virtual void NativeOnInitialized() override;
 
 protected:

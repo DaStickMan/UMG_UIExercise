@@ -2,6 +2,7 @@
 
 
 #include "FriendRowWidget.h"
+
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
 
@@ -21,4 +22,18 @@ void UFriendRowWidget::SetFriendData(const FString& Name, const FString& Info, b
 	{
 		StatusImage->SetColorAndOpacity(IsConnected ? FColor::Green : FColor::Red);
 	}
+}
+
+void UFriendRowWidget::NativeConstruct()
+{
+	if (HoverFriendWidgetClass)
+	{
+		UHoverFriendWidget* HoverWidgetInstance = CreateWidget<UHoverFriendWidget>(GetWorld(), HoverFriendWidgetClass);
+		if (HoverWidgetInstance)
+		{
+			SetToolTip(HoverWidgetInstance);
+		}
+	}
+	
+	Super::NativeConstruct();
 }

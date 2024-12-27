@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "HoverFriendWidget.h"
+
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "FriendRowWidget.generated.h"
@@ -24,5 +26,12 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UImage* StatusImage;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UHoverFriendWidget> HoverFriendWidgetClass;
+	
 	void SetFriendData(const FString& Name, const FString& Level, bool IsConnected) const;
+
+protected:
+	virtual void NativeConstruct() override;
+
 };

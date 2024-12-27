@@ -3,7 +3,6 @@
 
 #include "FriendsListController.h"
 
-#include "Components/CanvasPanelSlot.h"
 #include "Components/VerticalBoxSlot.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -26,6 +25,13 @@ void UFriendsListController::NativeOnInitialized()
 	for (const auto Friend: FriendsData)
 	{
 		AddFriend(*Friend);
+	}
+
+
+	if(OnlineScrollBox && OfflineScrollBox)
+	{
+		OnlineScrollBox->SetVisibility(ESlateVisibility::Visible);
+		OfflineScrollBox->SetVisibility(ESlateVisibility::Visible);
 	}
 
 	// Define o modo de entrada
@@ -152,7 +158,7 @@ void UFriendsListController::UpdateStatus(const FFriendsListData& friendData)
 
 	if(FriendRow)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Found Nickname: %s, Status: %s"), *NickNameString, friendData.IsConnected ? TEXT("Connected") : TEXT("Disconnected"));
+		//UE_LOG(LogTemp, Warning, TEXT("Found Nickname: %s, Status: %s"), *NickNameString, friendData.IsConnected ? TEXT("Connected") : TEXT("Disconnected"));
 
 		if(friendData.IsConnected)
 		{
@@ -171,7 +177,6 @@ void UFriendsListController::UpdateStatus(const FFriendsListData& friendData)
 		}
 		
 		FriendsWidgetMap.Remove(NickNameString);
-		
 		AddFriend(friendData);
 	}
 }
