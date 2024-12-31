@@ -26,8 +26,7 @@ void UFriendsListController::NativeOnInitialized()
 	{
 		AddFriend(*Friend);
 	}
-
-
+	
 	if(OnlineScrollBox && OfflineScrollBox)
 	{
 		OnlineScrollBox->SetVisibility(ESlateVisibility::Visible);
@@ -162,7 +161,10 @@ void UFriendsListController::UpdateStatus(const FFriendsListData& friendData)
 
 		if(friendData.IsConnected)
 		{
-			DisplayToast(FText::FromString(NickNameString));
+			FText isOnlineText = FText::FromString("is online!");
+			FText playerName = FText::FromString(NickNameString);
+			
+			DisplayToast(FText::Format(FText::FromString("{0} {1}"), playerName, isOnlineText));
 			if(OfflineScrollBox->HasChild(*FriendRow))
 			{
 				OfflineScrollBox->RemoveChild(*FriendRow);

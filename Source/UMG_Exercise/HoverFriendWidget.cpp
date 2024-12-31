@@ -15,14 +15,21 @@ void UHoverFriendWidget::SetPlayerData(const FFriendsListData& friendData) const
 	{
 		UE_LOG(LogTemp, Warning, TEXT("LastTimeOnline fiinciona"));
 
-		
-		FText LastOnlineText = FText::Format(
-		FText::FromString(TEXT("Last time online: {0}")),
-		friendData.LastTimeOnline
-		);
 
-		// Set the text on the NickName UI element
-		LastTimeOnline->SetText(LastOnlineText);
+		if(friendData.IsConnected)
+		{
+			LastTimeOnline->SetText(FText::FromString("Online"));
+		}
+		else
+		{
+			FText LastOnlineText = FText::Format(
+			FText::FromString(TEXT("Last time online: {0}")),
+			friendData.LastTimeOnline
+			);
+
+			// Set the text on the NickName UI element
+			LastTimeOnline->SetText(LastOnlineText);
+		}
 	}
 
 	if(PlayerPicture)
