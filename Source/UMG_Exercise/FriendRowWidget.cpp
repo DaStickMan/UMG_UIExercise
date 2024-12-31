@@ -6,33 +6,45 @@
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
 
-void UFriendRowWidget::SetFriendData(const FString& Name, const FString& Info, bool IsConnected) const
+void UFriendRowWidget::SetFriendData(const FFriendsListData& friendData)
 {
 	if (NameTextBlock)
 	{
-		NameTextBlock->SetText(FText::FromString(Name));
+		NameTextBlock->SetText(friendData.NickName);
 	}
 
 	if (LevelTextBlock)
 	{
-		LevelTextBlock->SetText(FText::FromString(Info));
+		FText level = FText::AsNumber(friendData.Level);
+		LevelTextBlock->SetText(level);
 	}
 
 	if (StatusImage)
 	{
-		StatusImage->SetColorAndOpacity(IsConnected ? FColor::Green : FColor::Red);
+		StatusImage->SetColorAndOpacity(friendData.IsConnected ? FColor::Green : FColor::Red);
+	}
+
+	if (HoverFriendWidgetClass)
+	{
+		HoverWidgetInstance = CreateWidget<UHoverFriendWidget>(GetWorld(), HoverFriendWidgetClass);
+
+		if(HoverWidgetInstance)
+		{
+			HoverWidgetInstance->SetPlayerData(friendData);
+			UE_LOG(LogTemp, Warning, TEXT("Instancia fiinciona"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Instancia nao fiinciona"));
+		}
 	}
 }
 
 void UFriendRowWidget::NativeConstruct()
 {
-	if (HoverFriendWidgetClass)
+	if (HoverWidgetInstance)
 	{
-		UHoverFriendWidget* HoverWidgetInstance = CreateWidget<UHoverFriendWidget>(GetWorld(), HoverFriendWidgetClass);
-		if (HoverWidgetInstance)
-		{
-			SetToolTip(HoverWidgetInstance);
-		}
+		SetToolTip(HoverWidgetInstance);
 	}
 	
 	Super::NativeConstruct();

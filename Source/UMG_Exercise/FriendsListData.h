@@ -12,8 +12,14 @@ struct UMG_EXERCISE_API FFriendsListData: public FTableRowBase
 	FText NickName;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FText LastTimeOnline;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int64 Level;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	bool IsConnected;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UTexture2D* Image;
 };

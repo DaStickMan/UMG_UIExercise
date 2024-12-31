@@ -29,9 +29,11 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UHoverFriendWidget> HoverFriendWidgetClass;
 	
-	void SetFriendData(const FString& Name, const FString& Level, bool IsConnected) const;
+	void SetFriendData(const FFriendsListData& friendData);
 
 protected:
 	virtual void NativeConstruct() override;
 
+private:
+	UHoverFriendWidget* HoverWidgetInstance;
 };

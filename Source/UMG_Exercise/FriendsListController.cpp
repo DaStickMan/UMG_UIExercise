@@ -50,7 +50,7 @@ void UFriendsListController::AddFriend(const FFriendsListData& Friend)
 		UFriendRowWidget* NewFriendRow = CreateWidget<UFriendRowWidget>(this, FriendRowWidgetClass);
 
 		// Set the data for the new friend row
-		NewFriendRow->SetFriendData(Friend.NickName.ToString(), FString::Printf(TEXT("%lld"), Friend.Level), Friend.IsConnected);
+		NewFriendRow->SetFriendData(Friend);
 		
 		if(Friend.IsConnected)
 		{
