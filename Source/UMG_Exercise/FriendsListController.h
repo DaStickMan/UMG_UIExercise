@@ -76,8 +76,6 @@ private:
 	UFUNCTION()
 	void DisplayToast(const FText& Message);
 
-	FTimerHandle RandomStatusTimerHandle;
-
 	TMap<FString, UFriendRowWidget*> FriendsWidgetMap;
 
 	FString GetFriendNickNameByPosition(int32 Index);	
