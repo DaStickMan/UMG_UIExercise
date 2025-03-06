@@ -101,8 +101,8 @@ void UFriendsListController::StartRandomStatusUpdates()
 {
 	// Set a random timer to call RandomlyChangePlayerStatus
 	float RandomDelay = UKismetMathLibrary::RandomFloatInRange(2.0f, 5.0f); // Random time between 2 to 5 seconds
-	FTimerHandle RandomStatusTimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(RandomStatusTimerHandle, this, &UFriendsListController::RandomlyChangePlayerStatus, RandomDelay, true);
+	FTimerHandle RandomTimer;
+	GetWorld()->GetTimerManager().SetTimer(RandomTimer, this, &UFriendsListController::RandomlyChangePlayerStatus, RandomDelay, true);
 }
 
 void UFriendsListController::RandomlyChangePlayerStatus()
